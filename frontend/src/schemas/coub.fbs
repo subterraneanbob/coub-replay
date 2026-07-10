@@ -1,0 +1,26 @@
+namespace CoubReplay.Serialization;
+
+table CoubMetadata {
+  permalink: string (required);
+  title: string;
+  author: string;
+  created_at: long = null;
+  updated_at: long = null;
+}
+
+table CoubMedia {
+  audio_mime_type: string;
+  audio_data: [ubyte];
+  video_mime_type: string;
+  video_data: [ubyte];
+}
+
+table Coub {
+  metadata: CoubMetadata;
+  media: CoubMedia;
+}
+
+root_type Coub;
+
+file_identifier "COUB";
+file_extension "coub";

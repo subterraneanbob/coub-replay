@@ -1,0 +1,14 @@
+html,
+body,
+#app {
+  height: 100%;
+  margin: 0;
+}
+
+.ms-card-title h2 {
+  font-size: 1.2rem !important;
+}
+
+.ms-card-content.ms-pb-0 {
+  padding-block-end: 0;
+}
