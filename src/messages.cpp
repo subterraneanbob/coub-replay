@@ -6,7 +6,7 @@
 
 namespace messages {
 
-	input_file input_file::load_from(const std::string& path) {
+	input_file input_file::load_from(const std::filesystem::path& path) {
 		
 		if (!std::filesystem::exists(path)) {
 			return {};

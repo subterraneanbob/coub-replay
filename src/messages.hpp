@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <filesystem>
 
 namespace messages {
 
@@ -9,7 +10,7 @@ namespace messages {
 		bool ok{ false };
 		std::string data{};
 
-		static input_file load_from(const std::string& path);
+		static input_file load_from(const std::filesystem::path& path);
 	};
 
 	struct proxy_response {

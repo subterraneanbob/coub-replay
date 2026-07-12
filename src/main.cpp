@@ -5,8 +5,13 @@
 #include <filesystem>
 #include "messages.hpp"
 
+#ifdef _WIN32
+#include <windows.h>
+#include <shellapi.h>
+#endif
+
 inline constexpr std::string_view g_app_name = "coub-replay";
-static std::string g_input_file;
+static std::filesystem::path g_input_file_path;
 
 static std::optional<saucer::icon> load_icon()
 {
@@ -46,7 +51,7 @@ static coco::stray start(saucer::application* app)
 
 	webview->expose("load_input_file", []() -> messages::input_file
 		{
-			return messages::input_file::load_from(g_input_file);
+			return messages::input_file::load_from(g_input_file_path);
 		});
 
 	webview->expose("cors_proxy_get", [](std::string url) -> std::expected<messages::proxy_response, std::string>
@@ -78,9 +83,25 @@ static coco::stray start(saucer::application* app)
 
 int main(int argc, char* argv[])
 {
-	if (argc > 1) {
-		g_input_file = argv[1];
+
+#ifdef _WIN32
+
+	int nArgs;
+	LPWSTR* szArglist = CommandLineToArgvW(GetCommandLineW(), &nArgs);
+
+	if (nArgs > 1) {
+		g_input_file_path = std::filesystem::path(szArglist[1]);
 	}
+
+	LocalFree(szArglist);
+
+#else
+
+	if (argc > 1) {
+		g_input_file_path = std::filesystem::path(argv[1]);
+	}
+
+#endif
 
 	return saucer::application::create({ .id = g_app_name })->run(start);
 }
